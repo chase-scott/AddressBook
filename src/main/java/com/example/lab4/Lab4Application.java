@@ -34,9 +34,7 @@ public class Lab4Application {
     }
 
     private static final BuddyInfo[] buddies = new BuddyInfo[] {
-            new BuddyInfo("The Doctor", "The TARDIS", "07700 900461"),
-            new BuddyInfo("Chase Scott", "123 Colonel By Drive", "221-420-6969"),
-            new BuddyInfo("Joe", "Cardboard Box", "N/A")
+            new BuddyInfo("The Doctor", "The TARDIS", "07700 900461")
     };
 
 }
