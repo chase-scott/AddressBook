@@ -29,7 +29,7 @@ class ApplicationTest {
         this.mockMvc.perform(get("/"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("[{\"id\":1,\"buddyBook\":[{\"id\":2,\"name\":\"test1\",\"address\":\"test1\",\"phoneNumber\":\"test1\"}]}]")));
+                .andExpect(content().string(containsString("[{\"id\":1,\"buddyBook\":[{\"id\":2,\"name\":\"test\",\"address\":\"test\",\"phoneNumber\":\"test\"}]}]")));
     }
 
     @Test
@@ -37,17 +37,17 @@ class ApplicationTest {
         this.mockMvc.perform(get("/addressbooks/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("test1")));
+                .andExpect(content().string(containsString("test")));
     }
 
     @Test
     public void addBuddyTest() throws Exception {
         this.mockMvc.perform(put("/1/buddies")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(asJsonString(new BuddyInfo("test1", "test1", "test1"))))
+                        .content(asJsonString(new BuddyInfo("test", "test", "test"))))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("{\"id\":1,\"buddyBook\":[{\"id\":1,\"name\":\"The Doctor\",\"address\":\"The TARDIS\",\"phoneNumber\":\"07700 900461\"},{\"id\":2,\"name\":\"test1\",\"address\":\"test1\",\"phoneNumber\":\"test1\"}]}"
+                .andExpect(content().string(containsString("{\"id\":1,\"buddyBook\":[{\"id\":1,\"name\":\"The Doctor\",\"address\":\"The TARDIS\",\"phoneNumber\":\"07700 900461\"},{\"id\":2,\"name\":\"test\",\"address\":\"test\",\"phoneNumber\":\"test\"}]}"
                 )));
     }
 
@@ -56,7 +56,7 @@ class ApplicationTest {
         this.mockMvc.perform(delete("/1/buddies/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("{\"id\":1,\"buddyBook\":[{\"id\":2,\"name\":\"test1\",\"address\":\"test1\",\"phoneNumber\":\"test1\"}]}"));
+                .andExpect(content().string("{\"id\":1,\"buddyBook\":[{\"id\":2,\"name\":\"test\",\"address\":\"test\",\"phoneNumber\":\"test\"}]}"));
     }
 
     @Test
