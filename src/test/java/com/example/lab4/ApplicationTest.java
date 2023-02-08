@@ -37,7 +37,7 @@ class ApplicationTest {
         this.mockMvc.perform(get("/addressbooks/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("addressbook"));
+                .andExpect(content().string(containsString("test1")));
     }
 
     @Test
