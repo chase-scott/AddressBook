@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>BuddyBookApplication</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <h1>Address Book Website</h1>
+  <table>
+  <tr th:each="addressBook : ${addressBooks}">
+      <td th:inline="text">Address Book [[${addressBook.id}]]</td>
+      <td><a th:href="@{/addressbooks/{id}(id=${addressBook.id})}">view</a></td>
+
+  </tr>
+  </table>
+
+    <form action="#" th:action="@{/}" method="post">
+        <input class="button" type="submit" value="New AddressBook">
+    </form>
+
+</body>
+</html>

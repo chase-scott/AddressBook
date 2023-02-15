@@ -20,43 +20,48 @@ public class AddressBookController {
 
     //Gets all address books
     @GetMapping("/")
-    @ResponseBody
-    public Iterable<AddressBook> getAddressBooks() {
-        return addressBookRepository.findAll();
+    public String getAddressBooks(Model model) {
+        Iterable<AddressBook> books = addressBookRepository.findAll();
+        model.addAttribute("addressBooks", books);
+        return "index";
     }
 
-    @GetMapping("/addressbooks/{id}")
-    public String getAddressBook(@PathVariable Long id, Model model) {
-        AddressBook addressBook = addressBookRepository.findById(id).orElseThrow(() -> new RuntimeException("Error finding addressBook with id:" + id));
-        model.addAttribute("addressBookId", id);
-        model.addAttribute("buddies", addressBook.getBuddyBook());
+    @GetMapping("/addressbooks/{addressBookId}")
+    public String getAddressBook(@PathVariable Long addressBookId, Model model) {
+        AddressBook addressBook = addressBookRepository.findById(addressBookId).orElseThrow(() -> new RuntimeException("Error finding addressBook with id:" + addressBookId));
+        model.addAttribute("addressBook", addressBook);
+        model.addAttribute("buddyInfo", new BuddyInfo());
         return "addressbook";
     }
 
     @PostMapping("/")
-    @ResponseBody
-    public AddressBook createAddressBook(@RequestBody AddressBook addressBook) {
-        return addressBookRepository.save(addressBook);
+    public String createAddressBook(@ModelAttribute AddressBook addressBook) {
+        addressBookRepository.save(addressBook);
+        return "redirect:/";
     }
 
-    @PutMapping("/{addressBookId}/buddies")
-    @ResponseBody
-    public AddressBook addBuddy(@PathVariable Long addressBookId, @RequestBody BuddyInfo buddyInfo) {
+    @PostMapping("/addressbooks/{addressBookId}")
+    public String addBuddy(@PathVariable Long addressBookId, @ModelAttribute BuddyInfo buddyInfo) {
         AddressBook addressBook = addressBookRepository.findById(addressBookId).orElseThrow(() -> new RuntimeException("Error finding addressBook with id:" + addressBookId));
+
         buddyInfo.setAddressBook(addressBook);
         buddyInfoRepository.save(buddyInfo);
+
         addressBook.addBuddy(buddyInfo);
-        return addressBookRepository.save(addressBook);
+        addressBookRepository.save(addressBook);
+
+        return "redirect:/addressbooks/" + addressBookId;
     }
 
-    @DeleteMapping("/{addressBookId}/buddies/{buddyId}")
-    @ResponseBody
-    public AddressBook removeBuddy(@PathVariable Long addressBookId, @PathVariable Long buddyId) {
+    @PostMapping("/addressbooks/{addressBookId}/{buddyId}")
+    public String removeBuddy(@PathVariable Long addressBookId, @PathVariable Long buddyId) {
         AddressBook addressBook = addressBookRepository.findById(addressBookId).orElseThrow(() -> new RuntimeException("Error finding addressBook with id:" + addressBookId));
         BuddyInfo buddyInfo = buddyInfoRepository.findById(buddyId).orElseThrow(() -> new RuntimeException("Error finding buddy with id:" + buddyId));
         addressBook.removeBuddy(buddyInfo);
         buddyInfoRepository.delete(buddyInfo);
-        return addressBookRepository.save(addressBook);
+        addressBookRepository.save(addressBook);
+
+        return "redirect:/addressbooks/" + addressBookId;
     }
 
 }

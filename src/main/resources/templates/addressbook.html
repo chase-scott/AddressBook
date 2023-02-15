@@ -3,44 +3,47 @@
 <head>
     <title>Address Book</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <style>
-        table {
-            font-family: Arial, Helvetica, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        table td, table th {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        table tr:nth-child(even){background-color: #f2f2f2;}
-
-        table tr:hover {background-color: #ddd;}
-
-        table th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #04AA6D;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
-<h1 th:inline="text">Address Book [[${addressBookId}]]</h1>
+<h1 th:inline="text">Address Book [[${addressBook.getId()}]]</h1>
 <table>
     <tr>
         <th>Name</th>
         <th>Address</th>
-        <th>Phone Number</th>
+        <th colspan="2">Phone Number</th>
     </tr>
-    <tr th:each="buddy : ${buddies}">
+    <tr th:each="buddy : ${addressBook.getBuddyBook()}">
         <td th:text="${buddy.name}"></td>
         <td th:text="${buddy.address}"></td>
         <td th:text="${buddy.phoneNumber}"></td>
+        <td>
+            <form th:action="@{'/addressbooks/' + ${addressBook.id} + '/' + ${buddy.id}}" method="POST">
+                <input type="hidden" name="_method" value="DELETE"/>
+                <button class="button" type="submit">Delete</button>
+            </form>
+        </td>
     </tr>
 </table>
+
+<hr>
+
+<form th:action="@{/addressbooks/{addressBookId}(addressBookId=${addressBook.id})}" method="post" th:object="${buddyInfo}">
+
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" th:field="*{name}"><br>
+
+    <label for="address">Address:</label>
+    <input type="text" id="address" name="address" th:field="*{address}"><br>
+
+    <label for="phoneNumber">Phone number:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" th:field="*{phoneNumber}"><br>
+
+    <button class="button" type="submit">Add Buddy</button>
+</form>
+
+
+<a href="/">Return to home page</a>
 </body>
 </html>

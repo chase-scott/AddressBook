@@ -1,6 +1,5 @@
 package com.example.lab4.model;
 
-import com.example.lab4.model.AddressBook;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
@@ -49,6 +48,18 @@ public class BuddyInfo {
 
     public String getPhoneNumber() {
         return phoneNumber;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
